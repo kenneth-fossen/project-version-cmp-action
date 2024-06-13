@@ -3,12 +3,14 @@
  */
 const core = require('@actions/core')
 const main = require('../src/main')
+const { setOutput } = require('@actions/core')
 
 // Mock the GitHub Actions core library
 const debugMock = jest.spyOn(core, 'debug').mockImplementation()
 const getInputMock = jest.spyOn(core, 'getInput').mockImplementation()
 const setFailedMock = jest.spyOn(core, 'setFailed').mockImplementation()
 const setOutputMock = jest.spyOn(core, 'setOutput').mockImplementation()
+const warningMock = jest.spyOn(core, 'warning').mockImplementation()
 
 // Mock the action's main function
 const cmpMock = jest.spyOn(main, 'cmp')
@@ -70,7 +72,7 @@ describe('action', () => {
     expect(setOutputMock).toHaveBeenNthCalledWith(1, 'equal', true)
   })
 
-  it('comapres two projects with unequal versions', async () => {
+  it('compares two projects with unequal versions', async () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation(name => {
       switch (name) {
@@ -102,6 +104,26 @@ describe('action', () => {
       'All versions should be equal'
     )
     expect(setOutputMock).toHaveBeenNthCalledWith(1, 'equal', false)
+  })
+
+  it('skips a project when no version', async () => {
+    getInputMock.mockImplementation(name => {
+      switch (name) {
+        case 'projects':
+          return 'testdata/NoVersion.csproj'
+        default:
+          return ''
+      }
+    })
+
+    await main.cmp()
+    expect(cmpMock).toHaveReturned()
+
+    expect(warningMock).toHaveBeenNthCalledWith(
+      1,
+      `Didn't find <Version>, skipping`
+    )
+    expect(setOutputMock).toHaveBeenNthCalledWith(1, 'equal', true)
   })
 
   it('sets a failed status', async () => {

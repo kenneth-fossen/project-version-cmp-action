@@ -11,6 +11,7 @@ inputs:
   projects:
     description: 'List of projects to check version number for'
     required: true
+    default: ''
 
 # Define your outputs here.
 outputs:

@@ -20,9 +20,13 @@ async function cmp() {
 
       const xmlObject = deserializeToXmlObject(file)
 
-      const version = xmlObject.Project.PropertyGroup.Version
-      core.debug(`Version: ${version}`)
-      versions.push(version)
+      const version = xmlObject.Project?.PropertyGroup?.Version
+      if (version === undefined || version === null) {
+        core.warning(`Didn't find <Version>, skipping`)
+      } else {
+        core.debug(`Version: ${version}`)
+        versions.push(version)
+      }
     }
 
     const result = versions.every(v => v === versions[0])
