@@ -12,7 +12,7 @@ will fail and report false.
 ### `projects`
 
 **Required** List of project files to check the version of. Default `""`. Uses
-paths defined from the root of the Git Repo.
+paths defined from the root of the Git repository.
 
 ## Outputs
 
