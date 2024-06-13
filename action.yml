@@ -1,18 +1,17 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'C# Project Version Comparer'
+description: 'Compares the version of different .csproj files'
+author: 'Kenneth Fossen'
 
 # Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  projects:
+    description: 'List of projects to check version number for'
     required: true
-    default: '1000'
 
 # Define your outputs here.
 outputs:
-  time:
-    description: 'Your output description here'
+  equal:
+    description: 'Boolean result'
 
 runs:
   using: node20
