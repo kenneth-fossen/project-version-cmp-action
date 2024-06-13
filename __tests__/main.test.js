@@ -3,7 +3,6 @@
  */
 const core = require('@actions/core')
 const main = require('../src/main')
-const { setOutput } = require('@actions/core')
 
 // Mock the GitHub Actions core library
 const debugMock = jest.spyOn(core, 'debug').mockImplementation()
