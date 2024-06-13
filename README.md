@@ -1,9 +1,7 @@
-# Create a JavaScript Action
+# C# Project Version Comparer Action 
 
 [![GitHub Super-Linter](https://github.com/kenneth-fossen/project-version-cmp-action/actions/workflows/linter.yml/badge.svg)](https://github.com/super-linter/super-linter)
 ![CI](https://github.com/kenneth-fossen/project-version-cmp-action/actions/workflows/ci.yml/badge.svg)
-
-# Hello world javascript action
 
 This action prints compares all the versions of your C# Project files that you
 submit as a list of arguments to the action. If they are not equal, the action
@@ -47,7 +45,7 @@ Using `act` you can test your action locally.
 
 `act -j project-version-cmp`
 
-## Action is created with the template Javascript Action
+## Action is created with the template JavaScript Action
 
 Use this template to bootstrap the creation of a JavaScript action. :rocket:
 
