@@ -20,5 +20,5 @@ jobs:
             testdata/Schema.csproj
 
       # Use the output from the `solution` step
-      - name: Get the output time
+      - name: Get the output equal
         run: echo "Projects are equal ${{ steps.solution.outputs.equal }}"
