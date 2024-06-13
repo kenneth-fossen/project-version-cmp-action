@@ -1,5 +1,7 @@
 on: [pull_request, push]
 
+permissions: read-all
+
 jobs:
   project-version-cmp:
     runs-on: ubuntu-latest
@@ -19,4 +21,4 @@ jobs:
 
       # Use the output from the `solution` step
       - name: Get the output time
-        run: echo "Projects are equal ${{ steps.solution.outputs }}"
+        run: echo "Projects are equal ${{ steps.solution.outputs.equal }}"
