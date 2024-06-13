@@ -11,65 +11,117 @@ const setFailedMock = jest.spyOn(core, 'setFailed').mockImplementation()
 const setOutputMock = jest.spyOn(core, 'setOutput').mockImplementation()
 
 // Mock the action's main function
-const runMock = jest.spyOn(main, 'run')
+const cmpMock = jest.spyOn(main, 'cmp')
 
 // Other utilities
-const timeRegex = /^\d{2}:\d{2}:\d{2}/
+// const timeRegex = /^\d{2}:\d{2}:\d{2}/
 
 describe('action', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
-  it('sets the time output', async () => {
+  it('sets the project list', async () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation(name => {
       switch (name) {
-        case 'milliseconds':
-          return '500'
+        case 'projects':
+          return 'testdata/Client.csproj\ntestdata/Schema.csproj'
         default:
           return ''
       }
     })
 
-    await main.run()
-    expect(runMock).toHaveReturned()
+    await main.cmp()
+    expect(cmpMock).toHaveReturned()
 
     // Verify that all of the core library functions were called correctly
-    expect(debugMock).toHaveBeenNthCalledWith(1, 'Waiting 500 milliseconds ...')
+    expect(debugMock).toHaveBeenNthCalledWith(1, 'Found 2 projects ...')
+  })
+
+  it('comapres two projects with equal versions', async () => {
+    // Set the action's inputs as return values from core.getInput()
+    getInputMock.mockImplementation(name => {
+      switch (name) {
+        case 'projects':
+          return 'testdata/Client.csproj\ntestdata/Schema.csproj'
+        default:
+          return ''
+      }
+    })
+
+    await main.cmp()
+    expect(cmpMock).toHaveReturned()
+
+    // Verify that all of the core library functions were called correctly
+    expect(debugMock).toHaveBeenNthCalledWith(1, 'Found 2 projects ...')
+
     expect(debugMock).toHaveBeenNthCalledWith(
       2,
-      expect.stringMatching(timeRegex)
+      'Project: testdata/Client.csproj'
     )
+    expect(debugMock).toHaveBeenNthCalledWith(3, 'Version: 1.2.4')
     expect(debugMock).toHaveBeenNthCalledWith(
-      3,
-      expect.stringMatching(timeRegex)
+      4,
+      'Project: testdata/Schema.csproj'
     )
-    expect(setOutputMock).toHaveBeenNthCalledWith(
+    expect(debugMock).toHaveBeenNthCalledWith(5, 'Version: 1.2.4')
+
+    expect(setOutputMock).toHaveBeenNthCalledWith(1, 'equal', true)
+  })
+
+  it('comapres two projects with unequal versions', async () => {
+    // Set the action's inputs as return values from core.getInput()
+    getInputMock.mockImplementation(name => {
+      switch (name) {
+        case 'projects':
+          return 'testdata/Client.csproj\ntestdata/Entities.csproj'
+        default:
+          return ''
+      }
+    })
+
+    await main.cmp()
+    expect(cmpMock).toHaveReturned()
+
+    // Verify that all of the core library functions were called correctly
+    expect(debugMock).toHaveBeenNthCalledWith(1, 'Found 2 projects ...')
+
+    expect(debugMock).toHaveBeenNthCalledWith(
+      2,
+      'Project: testdata/Client.csproj'
+    )
+    expect(debugMock).toHaveBeenNthCalledWith(3, 'Version: 1.2.4')
+    expect(debugMock).toHaveBeenNthCalledWith(
+      4,
+      'Project: testdata/Entities.csproj'
+    )
+    expect(debugMock).toHaveBeenNthCalledWith(5, 'Version: 1.2.3')
+    expect(setFailedMock).toHaveBeenNthCalledWith(
       1,
-      'time',
-      expect.stringMatching(timeRegex)
+      'All versions should be equal'
     )
+    expect(setOutputMock).toHaveBeenNthCalledWith(1, 'equal', false)
   })
 
   it('sets a failed status', async () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation(name => {
       switch (name) {
-        case 'milliseconds':
+        case 'projects':
           return 'this is not a number'
         default:
           return ''
       }
     })
 
-    await main.run()
-    expect(runMock).toHaveReturned()
+    await main.cmp()
+    expect(cmpMock).toHaveReturned()
 
     // Verify that all of the core library functions were called correctly
     expect(setFailedMock).toHaveBeenNthCalledWith(
       1,
-      'milliseconds not a number'
+      'IO: no such file or directory this is not a number'
     )
   })
 
@@ -77,20 +129,20 @@ describe('action', () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation(name => {
       switch (name) {
-        case 'milliseconds':
-          throw new Error('Input required and not supplied: milliseconds')
+        case 'projects':
+          throw new Error('Input required and not supplied: projects')
         default:
           return ''
       }
     })
 
-    await main.run()
-    expect(runMock).toHaveReturned()
+    await main.cmp()
+    expect(cmpMock).toHaveReturned()
 
     // Verify that all of the core library functions were called correctly
     expect(setFailedMock).toHaveBeenNthCalledWith(
       1,
-      'Input required and not supplied: milliseconds'
+      'Input required and not supplied: projects'
     )
   })
 })
