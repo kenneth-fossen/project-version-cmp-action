@@ -2,6 +2,10 @@ name: 'C# Project Version Comparer'
 description: 'Compares the version of different .csproj files'
 author: 'Kenneth Fossen'
 
+branding:
+  icon: 'shield'
+  color: 'green'
+
 # Define your inputs here.
 inputs:
   projects:
