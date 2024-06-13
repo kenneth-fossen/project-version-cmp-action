@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;netstandard2.0</TargetFrameworks>
+    <Version>1.2.4</Version>
+
+    <PackageDescription>Client library for consuming public API.</PackageDescription>
+  </PropertyGroup>
+
+  <ItemGroup>
+  </ItemGroup>
+
+  <ItemGroup>
+  </ItemGroup>
+
+  <ItemGroup>
+  </ItemGroup>
+
+  <Target>
+  </Target>
+
+  <ItemGroup>
+  </ItemGroup>
+</Project>
