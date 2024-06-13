@@ -13,7 +13,7 @@ jobs:
         uses: ./ # Uses an action in the root directory
         id: solution
         with:
-          projects: |- 
+          projects: |-
             testdata/Client.csproj
             testdata/Schema.csproj
 
