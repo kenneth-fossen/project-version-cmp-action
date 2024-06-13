@@ -1,16 +1,16 @@
 {
-  "name": "javascript-action",
-  "description": "GitHub Actions JavaScript Template",
-  "version": "0.0.0",
+  "name": "project-version-cmp-action",
+  "description": "GitHub Actions for comparing C# project versions",
+  "version": "1.0.0",
   "author": "",
   "private": true,
-  "homepage": "https://github.com/actions/javascript-action#readme",
+  "homepage": "https://github.com/kenneth-fossen/project-version-cmp-action#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/javascript-action.git"
+    "url": "git+https://github.com/kenneth-fossen/project-version-cmp-action.git"
   },
   "bugs": {
-    "url": "https://github.com/actions/javascript-action/issues"
+    "url": "https://github.com/kenneth-fossen/project-version-cmp-action/issues"
   },
   "keywords": [
     "GitHub",
