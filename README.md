@@ -1,4 +1,4 @@
-# C# Project Version Comparer Action 
+# C# Project Version Comparer Action
 
 [![GitHub Super-Linter](https://github.com/kenneth-fossen/project-version-cmp-action/actions/workflows/linter.yml/badge.svg)](https://github.com/super-linter/super-linter)
 ![CI](https://github.com/kenneth-fossen/project-version-cmp-action/actions/workflows/ci.yml/badge.svg)
