@@ -1,30 +1,64 @@
+const { XMLParser } = require('fast-xml-parser')
+const fs = require('node:fs/promises')
+const path = require('node:path')
 const core = require('@actions/core')
-const { wait } = require('./wait')
 
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
  */
-async function run() {
+async function cmp() {
   try {
-    const ms = core.getInput('milliseconds', { required: true })
+    const projectsInput = core.getInput('projects', { required: true })
+    const projects = parseProjectFilePaths(projectsInput)
 
-    // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-    core.debug(`Waiting ${ms} milliseconds ...`)
+    core.debug(`Found ${projects.length} projects ...`)
+    const versions = []
+    for (const project of projects) {
+      core.debug(`Project: ${project}`)
+      const file = await getProjectFileContent(project)
 
-    // Log the current timestamp, wait, then log the new timestamp
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+      const xmlObject = deserializeToXmlObject(file)
 
-    // Set outputs for other workflow steps to use
-    core.setOutput('time', new Date().toTimeString())
+      const version = xmlObject.Project.PropertyGroup.Version
+      core.debug(`Version: ${version}`)
+      versions.push(version)
+    }
+
+    const result = versions.every(v => v === versions[0])
+
+    if (!result) {
+      core.setFailed('All versions should be equal')
+    }
+
+    core.setOutput('equal', result)
   } catch (error) {
-    // Fail the workflow run if an error occurs
     core.setFailed(error.message)
   }
 }
 
+async function getProjectFileContent(project) {
+  const p = path.resolve(project)
+  try {
+    return await fs.readFile(p, { encoding: 'utf8' })
+  } catch (err) {
+    throw new Error(`IO: no such file or directory ${project}`)
+  }
+}
+
+function deserializeToXmlObject(file) {
+  const xmlParser = new XMLParser()
+  return xmlParser.parse(file)
+}
+
+function parseProjectFilePaths(input) {
+  const projects = []
+  for (const line of input.split(/\r|\n/)) {
+    projects.push(line)
+  }
+  return projects
+}
+
 module.exports = {
-  run
+  cmp
 }
