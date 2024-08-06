@@ -4881,7 +4881,7 @@ async function cmp() {
 
       const version = xmlObject.Project?.PropertyGroup?.Version
       if (version === undefined || version === null) {
-        core.warning(`Didn't find <Version>, skipping`)
+        core.warning('Unable to find <Version> tag, skipping')
       } else {
         core.debug(`Version: ${version}`)
         versions.push(version)

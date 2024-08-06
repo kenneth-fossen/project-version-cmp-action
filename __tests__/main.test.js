@@ -120,7 +120,7 @@ describe('action', () => {
 
     expect(warningMock).toHaveBeenNthCalledWith(
       1,
-      `Didn't find <Version>, skipping`
+      'Unable to find <Version> tag, skipping'
     )
     expect(setOutputMock).toHaveBeenNthCalledWith(1, 'equal', true)
   })
